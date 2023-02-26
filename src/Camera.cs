@@ -16,10 +16,10 @@ namespace NarakaiImageDepth {
             
             time += 0.002f;
 
-            float dist = 20;
+            float dist = 50;
             float rx = MathF.Sin(time) * dist;
             float ry = MathF.Cos(time) * dist;
-            lookAt = Matrix4.LookAt(new Vector3(ry, 0, rx), new Vector3(0, 0, 0), Vector3.UnitY);
+            lookAt = Matrix4.LookAt(NarakaiOpenGL.currentCountryPosition, new Vector3(0, 0, 0), Vector3.UnitY);
 
             float aspect = (float)screenSizepxl.X / (float)screenSizepxl.Y;
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), 1f, 0.01f, 1000f);

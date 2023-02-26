@@ -37,23 +37,25 @@ namespace NarakaiImageDepth {
 
             int width  = textureData.Y;
             int height = textureData.Z;
+
+            float aspect = (float)width/(float)height;
             
             List<float> grid = new List<float>();
 
             for (int x = 0; x < width; x++) { for (int y = 0; y < height; y++) {
 
-                grid.Add(((float)x     / (float)width)   * 2f - 1);
+                grid.Add(((float)x     / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)y     / (float)height)  * 2f - 1);
-                grid.Add(((float)(x+1) / (float)width)   * 2f - 1);
+                grid.Add(((float)(x+1) / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)y     / (float)height)  * 2f - 1);
-                grid.Add(((float)(x+1) / (float)width)   * 2f - 1);
+                grid.Add(((float)(x+1) / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)(y+1) / (float)height)  * 2f - 1);
 
-                grid.Add(((float)x     / (float)width)   * 2f - 1);
+                grid.Add(((float)x     / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)y     / (float)height)  * 2f - 1);
-                grid.Add(((float)x     / (float)width)   * 2f - 1);
+                grid.Add(((float)x     / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)(y+1) / (float)height)  * 2f - 1);
-                grid.Add(((float)(x+1) / (float)width)   * 2f - 1);
+                grid.Add(((float)(x+1) / (float)width)   * aspect * 2f - 1);
                 grid.Add(((float)(y+1) / (float)height)  * 2f - 1);
             }}
 
