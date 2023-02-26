@@ -24,6 +24,7 @@ namespace NarakaiImageDepth {
             GL.CompileShader(fragment);
 
             Console.WriteLine(GL.GetShaderInfoLog(fragment));
+            Console.WriteLine(GL.GetShaderInfoLog(vertex));
 
             openGLShader.program = GL.CreateProgram();
             GL.AttachShader(openGLShader.program, vertex);

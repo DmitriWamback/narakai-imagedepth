@@ -36,6 +36,9 @@ namespace NarakaiImageDepth {
             if (!GLFW.Init()) throw new NotImplementedException();
 
             Camera.Initialize();
+            currentCountryPosition = new Vector3(MathF.Sin(rotation.X) * MathF.Cos(rotation.Y) * globeZoom, 
+                                                 MathF.Sin(rotation.Y) * globeZoom, 
+                                                 MathF.Cos(rotation.X) * MathF.Cos(rotation.Y) * globeZoom);
 
             simpleDepthShader = NarakaiOpenGLShader.Create("SimpleDepth");
             simple3DShader    = NarakaiOpenGLShader.Create("Simple3D");
@@ -103,6 +106,7 @@ namespace NarakaiImageDepth {
             simpleDepthShader.SetInt("depthMap", 0);
             simpleDepthShader.SetInt("albedo", 1);
             simpleDepthShader.SetMatrix4("projection", Camera.projection);
+            simpleDepthShader.SetMatrix4("depthProjection", Camera.depthProjection);
             simpleDepthShader.SetMatrix4("lookAt", Camera.lookAt);
 
             try {
@@ -114,6 +118,7 @@ namespace NarakaiImageDepth {
 
             simple3DShader.Use();
             simple3DShader.SetMatrix4("projection", Camera.projection);
+            simple3DShader.SetMatrix4("depthProjection", Camera.depthProjectionAspect1);
             simple3DShader.SetMatrix4("lookAt", Camera.lookAt);
             cube.Render(simple3DShader);
 

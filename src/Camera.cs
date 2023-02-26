@@ -4,7 +4,7 @@ namespace NarakaiImageDepth {
 
     public class Camera {
 
-        public static Matrix4 projection, lookAt;
+        public static Matrix4 projection, lookAt, depthProjection, depthProjectionAspect1;
         static float time;
 
         public static void Initialize() {
@@ -23,6 +23,8 @@ namespace NarakaiImageDepth {
 
             float aspect = (float)screenSizepxl.X / (float)screenSizepxl.Y;
             projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), aspect, 0.01f, 1000f);
+            depthProjection = Matrix4.CreateOrthographic(40f, 20f, 0.1f, 100f);
+            depthProjectionAspect1 = Matrix4.CreateOrthographic(40f * aspect, 40f, 0.1f, 100f);
         }
     }
 }
