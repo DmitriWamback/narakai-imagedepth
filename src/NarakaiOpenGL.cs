@@ -9,9 +9,10 @@ namespace NarakaiImageDepth {
     public class NarakaiOpenGL: GameWindow {
 
         Dictionary<string, Vector3i> textures = new Dictionary<string, Vector3i>();
-        NarakaiOpenGLShader shader;
+        NarakaiOpenGLShader simpleDepthShader, simple3DShader;
+        Cube cube;
 
-        float globeZoom = 100f;
+        float globeZoom = 40f;
 
         float[] frameVertices = {
             -1f, -1f,
@@ -36,7 +37,9 @@ namespace NarakaiImageDepth {
 
             Camera.Initialize();
 
-            shader = NarakaiOpenGLShader.Create("SimpleDepth");
+            simpleDepthShader = NarakaiOpenGLShader.Create("SimpleDepth");
+            simple3DShader    = NarakaiOpenGLShader.Create("Simple3D");
+            cube = new Cube();
 
             frameVertexArray = GL.GenVertexArray();
             frameVertexObject = GL.GenBuffer();
@@ -94,14 +97,13 @@ namespace NarakaiImageDepth {
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             Camera.Update(ClientSize);
 
-            shader.Use();
+            simpleDepthShader.Use();
             GL.BindVertexArray(frameVertexArray);
 
-            shader.SetInt("depthMap", 0);
-            shader.SetInt("albedo", 1);
-
-            shader.SetMatrix4("projection", Camera.projection);
-            shader.SetMatrix4("lookAt", Camera.lookAt);
+            simpleDepthShader.SetInt("depthMap", 0);
+            simpleDepthShader.SetInt("albedo", 1);
+            simpleDepthShader.SetMatrix4("projection", Camera.projection);
+            simpleDepthShader.SetMatrix4("lookAt", Camera.lookAt);
 
             try {
                 Texture.BindTextureToTarget(TextureUnit.Texture0, textures["DepthMap"].X);
@@ -109,6 +111,11 @@ namespace NarakaiImageDepth {
             }
             catch(Exception e) { Console.WriteLine(e.Message); }
             GL.DrawArrays(PrimitiveType.Triangles, 0, frameVertices.Length/3);
+
+            simple3DShader.Use();
+            simple3DShader.SetMatrix4("projection", Camera.projection);
+            simple3DShader.SetMatrix4("lookAt", Camera.lookAt);
+            cube.Render(simple3DShader);
 
             this.SwapBuffers();
             GLFW.PollEvents();

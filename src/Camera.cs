@@ -22,7 +22,7 @@ namespace NarakaiImageDepth {
             lookAt = Matrix4.LookAt(NarakaiOpenGL.currentCountryPosition, new Vector3(0, 0, 0), Vector3.UnitY);
 
             float aspect = (float)screenSizepxl.X / (float)screenSizepxl.Y;
-            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), 1f, 0.01f, 1000f);
+            projection = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(90f), aspect, 0.01f, 1000f);
         }
     }
 }
