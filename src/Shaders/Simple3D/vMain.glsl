@@ -14,11 +14,14 @@ out VERTEX {
     vec3 normal;
     vec2 uv;
 } o;
+uniform int isOrtho = 1;
 
 void main() {
 
     o.fragp = (model * vec4(vertex, 1.0)).xyz;
-    o.normal = normalize(normal);
+    o.normal = mat3(transpose(inverse(model))) * normal;  
     o.uv = uv;
-    gl_Position = depthProjection * lookAt * model * vec4(vertex, 1.0);
+
+    if (isOrtho == 0) { gl_Position = projection * lookAt * model * vec4(vertex, 1.0); }
+    else { gl_Position = depthProjection * lookAt * model * vec4(vertex, 1.0); }
 }

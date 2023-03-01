@@ -12,7 +12,7 @@ namespace NarakaiImageDepth {
         NarakaiOpenGLShader simpleDepthShader, simple3DShader;
         Cube cube;
 
-        float globeZoom = 40f;
+        float globeZoom = 100f;
 
         float[] frameVertices = {
             -1f, -1f,
@@ -64,11 +64,31 @@ namespace NarakaiImageDepth {
 
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+            Task.Run(() => MultithreadedUpdateFrame());
         }
 
         protected override void OnMouseMove(MouseMoveEventArgs e) {
             base.OnMouseMove(e);
 
+            Task.Run(() => MultithreadedMouseMove(e));
+        }
+        protected override void OnMouseWheel(MouseWheelEventArgs e) {
+            base.OnMouseWheel(e);
+            Task.Run(() => MultithreadedMouseWheel(e));
+        }
+
+        void MultithreadedMouseWheel(MouseWheelEventArgs e) {
+            globeZoom += e.OffsetY * 0.1f;
+
+            if (globeZoom < 1.061f)     globeZoom = 1.061f;
+            if (globeZoom > 100f) globeZoom = 100f;
+
+            currentCountryPosition = new Vector3(MathF.Sin(rotation.X) * MathF.Cos(rotation.Y) * globeZoom, 
+                                                 MathF.Sin(rotation.Y) * globeZoom, 
+                                                 MathF.Cos(rotation.X) * MathF.Cos(rotation.Y) * globeZoom);
+        }
+        void MultithreadedMouseMove(MouseMoveEventArgs e) {
             if (this.IsMouseButtonDown(MouseButton.Right)) {
                 rotation.X -= this.MouseState.Delta.X * 0.01f;
                 rotation.Y += this.MouseState.Delta.Y * 0.01f;
@@ -81,17 +101,12 @@ namespace NarakaiImageDepth {
                                                      MathF.Cos(rotation.X) * MathF.Cos(rotation.Y) * globeZoom);
             }
         }
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            base.OnMouseWheel(e);
-            globeZoom += e.OffsetY * 0.1f;
 
-            if (globeZoom < 1.061f)     globeZoom = 1.061f;
-            if (globeZoom > 100f) globeZoom = 100f;
-
-            currentCountryPosition = new Vector3(MathF.Sin(rotation.X) * MathF.Cos(rotation.Y) * globeZoom, 
-                                                 MathF.Sin(rotation.Y) * globeZoom, 
-                                                 MathF.Cos(rotation.X) * MathF.Cos(rotation.Y) * globeZoom);
+        void MultithreadedUpdateFrame() {
+            while (true) {
+                cube.position.Y += 0.01f;
+                Thread.Sleep(10);
+            }
         }
 
         protected override void OnUpdateFrame(FrameEventArgs args) {

@@ -8,6 +8,7 @@ uniform mat4 depthProjection;
 uniform mat4 lookAt;
 
 out vec2 uv_coord;
+uniform int isOrtho = 1;
 
 void main() {
 
@@ -22,7 +23,8 @@ void main() {
     vec3 vert = vec3(x, y, depthPoint);
     uv_coord = uv;
 
-    gl_Position = depthProjection * lookAt * vec4(vert, 1.0);
-    //gl_Position = vec4(vertex, 0.0, 1.0);
-    gl_PointSize = 10.0;
+    
+    if (isOrtho == 0) { gl_Position = projection * lookAt * vec4(vert, 1.0); }
+    else { gl_Position = depthProjection * lookAt * vec4(vert, 1.0); }
+    gl_PointSize = 5.0;
 }

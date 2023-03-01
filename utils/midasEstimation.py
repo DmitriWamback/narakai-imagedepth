@@ -3,8 +3,8 @@ import cv2
 import time
 import numpy as np
 
-#model_type = 'DPT_Large'
-model_type = 'DPT_Hybrid'
+model_type = 'DPT_Large'
+#model_type = 'DPT_Hybrid'
 #model_type = 'MiDaS_small'
 
 midas = torch.hub.load('intel-isl/MiDaS', model_type)

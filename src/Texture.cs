@@ -11,8 +11,8 @@ namespace NarakaiImageDepth {
             int texture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, texture);
 
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
             int w, h;
 
@@ -39,6 +39,8 @@ namespace NarakaiImageDepth {
             int height = textureData.Z;
 
             float aspect = (float)width/(float)height;
+            width = 400;
+            height = (int)((float)width * aspect);
             
             List<float> grid = new List<float>();
 
